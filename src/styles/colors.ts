@@ -16,4 +16,5 @@ export const CHART_COLOR = {
 export const COMMON_COLOR = {
     title: '#abfcc689',
     subTitle: '#98989883',
+    xaxisTitle: '#808080',
 } as const;
