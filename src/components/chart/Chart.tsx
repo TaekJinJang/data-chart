@@ -22,6 +22,13 @@ const Chart = () => {
     ];
 
     const chartOptions: ApexOptions = {
+        noData: {
+            // 데이터가 없을 시
+            text: 'Loading...',
+            style: {
+                fontSize: '40px',
+            },
+        },
         legend: {
             // 범례
             position: 'bottom', // 배치
@@ -38,6 +45,11 @@ const Chart = () => {
             // 차트
             height: 350, // 높이 설정
             type: 'bar', // 차트 타입
+            events: {
+                click(e, chart, options) {
+                    console.info(e, 'e', chart, 'chart', 'options', options);
+                },
+            },
         },
         // colors: ['#DB211D', '#6690FF'],
         fill: {
