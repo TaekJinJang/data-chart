@@ -3,6 +3,7 @@ import useChartData from 'hooks/useChartData';
 import styled from 'styled-components';
 import {ApexOptions} from 'apexcharts';
 import {CHART_COLOR, COMMON_COLOR} from 'styles/colors';
+import Filter from './Filter';
 
 const Chart = () => {
     const {timeList, idList, barList, areaList} = useChartData();
@@ -23,10 +24,9 @@ const Chart = () => {
     const chartOptions: ApexOptions = {
         legend: {
             // 범례
-            position: 'top', // 배치
-            horizontalAlign: 'left', // 수평으로 왼쪽 정렬
-            offsetX: 50, // X축 오프셋(위치 조정)
-            offsetY: 10, // Y축 오프셋(위치 조정)
+            position: 'bottom', // 배치
+            horizontalAlign: 'center', // 수평으로 가운데 정렬
+            offsetY: -10, // Y축 오프셋(위치 조정)
             onItemClick: {
                 toggleDataSeries: true, // 범례 항목 클릭 시 해당 데이터 시리즈를 토글(보이기/숨기기)
             },
@@ -92,6 +92,7 @@ const Chart = () => {
 
     return (
         <Container>
+            <Filter />
             <ApexCharts series={series} options={chartOptions} />
         </Container>
     );
