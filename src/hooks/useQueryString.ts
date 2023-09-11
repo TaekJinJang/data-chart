@@ -11,11 +11,13 @@ export default function useQuerystring() {
         setSearchParams(searchParams);
     };
 
-    const deleteQuery = (value: string) => {
+    const deleteQuery = (value?: string) => {
         searchParams.delete('filter');
-        queries
-            .filter(query => query !== value)
-            .forEach(query => searchParams.append('filter', query));
+        if (value) {
+            queries
+                .filter(query => query !== value)
+                .forEach(query => searchParams.append('filter', query));
+        }
         setSearchParams(searchParams);
     };
 

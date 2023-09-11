@@ -1,14 +1,29 @@
 import useChartData from 'hooks/useChartData';
+import useQuerystring from 'hooks/useQueryString';
 import styled from 'styled-components';
 
 const Filter = () => {
     const {idList} = useChartData();
+    const {queries, addQuery, deleteQuery} = useQuerystring();
+
     const filterList = [...new Set(idList)];
+
+    const handleFilterValue = (e: React.MouseEvent<HTMLButtonElement>) => {
+        const {value} = e.currentTarget;
+        console.info(value);
+        if (value === 'ALL') return deleteQuery();
+        if (queries.includes(value)) deleteQuery(value);
+        else addQuery(value);
+    };
+
     return (
         <Container>
+            <FilterButton value='ALL' onClick={e => handleFilterValue(e)}>
+                전체보기
+            </FilterButton>
             {filterList.map((filter, index) => {
                 return (
-                    <FilterButton id={filter} value={filter}>
+                    <FilterButton key={index} value={filter} onClick={e => handleFilterValue(e)}>
                         {filter}
                     </FilterButton>
                 );
