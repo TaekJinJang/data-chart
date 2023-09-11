@@ -1,12 +1,11 @@
-import {getChartData} from 'apis/chart';
-import useChartData from 'hooks/useChartData';
-// import { useEffect } from "react"
+import Chart from 'components/Chart';
 
 const Home = () => {
-    const {timeList, idList, barList, areaList} = useChartData();
-    console.info(timeList, idList, barList, areaList);
-
-    return <div>gdgd</div>;
+    return (
+        <>
+            <Chart />
+        </>
+    );
 };
 
 export default Home;
