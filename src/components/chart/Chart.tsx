@@ -2,6 +2,7 @@ import ApexCharts from 'react-apexcharts';
 import useChartData from 'hooks/useChartData';
 import styled from 'styled-components';
 import {ApexOptions} from 'apexcharts';
+import {CHART_COLOR, COMMON_COLOR} from 'styles/colors';
 
 const Chart = () => {
     const {timeList, idList, barList, areaList} = useChartData();
@@ -14,7 +15,7 @@ const Chart = () => {
         },
         {
             name: 'Bar',
-            type: 'column',
+            type: 'bar',
             data: barList,
         },
     ];
@@ -38,8 +39,12 @@ const Chart = () => {
             height: 350, // 높이 설정
             type: 'bar', // 차트 타입
         },
+        // colors: ['#DB211D', '#6690FF'],
+        fill: {
+            opacity: [1, 0.5],
+        },
         stroke: {
-            width: [1, 2], //(선 그래프에서 선 또는 테두리 너비)
+            width: [3, 0], //(선 그래프에서 선 또는 테두리 너비)
             curve: 'smooth', //(선 그래프에서 곡선 유형)
         },
 
@@ -78,7 +83,7 @@ const Chart = () => {
             // X축
             categories: timeList, // 카테고리 목록
             tickAmount: 13, // 나타낼 라벨 개수
-            title: {text: '2023-02-05일자', offsetX: -480, style: {color: '#808080'}},
+            title: {text: '2023-02-05일자', offsetX: -600, style: {color: COMMON_COLOR.xaxisTitle}},
             labels: {
                 rotate: 0,
             },
@@ -97,6 +102,6 @@ export default Chart;
 const Container = styled.div`
     position: relative;
     width: 100%;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 50px;
 `;
