@@ -1,21 +1,25 @@
 import {getChartData} from 'apis/chart';
 import {useEffect, useState} from 'react';
-import {chartDataTypes} from 'types/chart';
+import {dataResponseTypes} from 'types/chart';
 
 const useChartData = () => {
-    const [data, setData] = useState<chartDataTypes['response']>();
+    const [data, setData] = useState<dataResponseTypes>({});
     useEffect(() => {
-        getChartData().then(data => {
+        const getData = async () => {
+            const data = await getChartData();
             setData(data.response);
-        });
+        };
+        getData();
     }, []);
-    const timeList = data ? Object.keys(data).map(time => time.split(' ')[1]) : [];
 
-    const idList = data ? Object.values(data).map(entry => entry.id) : [];
+    const timeList = Object.keys(data).map(time => time.split(' ')[1]);
 
-    const barList = data ? Object.values(data).map(entry => entry.value_bar) : [];
+    const idList = Object.values(data).map(entry => entry.id);
 
-    const areaList = data ? Object.values(data).map(entry => entry.value_area) : [];
+    const barList = Object.values(data).map(entry => entry.value_bar);
+
+    const areaList = Object.values(data).map(entry => entry.value_area);
+
     return {timeList, idList, barList, areaList};
 };
 
