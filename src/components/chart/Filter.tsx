@@ -23,7 +23,12 @@ const Filter = () => {
             </FilterButton>
             {filterList.map((filter, index) => {
                 return (
-                    <FilterButton key={index} value={filter} onClick={e => handleFilterValue(e)}>
+                    <FilterButton
+                        active={queries.includes(filter)}
+                        key={index}
+                        value={filter}
+                        onClick={e => handleFilterValue(e)}
+                    >
                         {filter}
                     </FilterButton>
                 );
@@ -38,9 +43,13 @@ const Container = styled.div`
     margin-left: 50px;
 `;
 
-const FilterButton = styled.button`
+const FilterButton = styled.button<{active?: boolean}>`
+    background-color: ${({active}) => active && '#74d3a3'};
     border-radius: 50px;
     border-color: gray;
     margin-left: 20px;
     display: inline-block;
+    &:hover {
+        background-color: #74d3a3;
+    }
 `;
