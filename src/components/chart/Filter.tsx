@@ -24,7 +24,7 @@ const Filter = () => {
             {filterList.map((filter, index) => {
                 return (
                     <FilterButton
-                        active={queries.includes(filter)}
+                        $active={queries.includes(filter).toString()}
                         key={index}
                         value={filter}
                         onClick={e => handleFilterValue(e)}
@@ -43,8 +43,8 @@ const Container = styled.div`
     margin-left: 50px;
 `;
 
-const FilterButton = styled.button<{active?: boolean}>`
-    background-color: ${({active}) => active && '#74d3a3'};
+const FilterButton = styled.button<{$active?: string}>`
+    background-color: ${({$active}) => $active === 'true' && '#74d3a3'};
     border-radius: 50px;
     border-color: gray;
     margin-left: 20px;
