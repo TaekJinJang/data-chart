@@ -28,8 +28,8 @@ const Chart = () => {
     const filterColors = [
         '#0059ff',
         ({dataPointIndex}: {dataPointIndex: number}) => {
-            const clickData = idList[dataPointIndex];
-            return queries.includes(clickData) ? '#ff0040' : '#00e396';
+            const filterData = idList[dataPointIndex];
+            return queries.includes(filterData) ? '#ff0040' : '#00e396';
         },
     ];
 
@@ -85,8 +85,14 @@ const Chart = () => {
             height: 350, // 높이 설정
             type: 'bar', // 차트 타입
             events: {
-                click(e, chart, options) {
-                    console.info(e, 'e', chart, 'chart', 'options', options);
+                click: (event, chart, config) => {
+                    const clickData = idList[config.dataPointIndex];
+                    queries.includes(clickData) ? deleteQuery(clickData) : addQuery(clickData);
+                },
+                updated: (chartContext, config) => {
+                    // 차트에 시리즈 데이터가 없을 시 모든 주석을 제거
+                    const isAreaActive = !!config.config.series[0].data.length;
+                    if (!isAreaActive) chartContext.clearAnnotations();
                 },
             },
         },
