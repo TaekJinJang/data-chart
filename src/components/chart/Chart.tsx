@@ -4,10 +4,7 @@ import Filter from './Filter';
 import useQuerystring from 'hooks/useQueryString';
 import * as options from 'components/chart/Options';
 import CustomTooltip from 'components/chart/CustomTooltip';
-
-interface dataPointType {
-    dataPointIndex: number;
-}
+import {dataPointType} from 'types/chart';
 
 const Chart = () => {
     const {timeList, idList, barList, areaList} = useChartData();

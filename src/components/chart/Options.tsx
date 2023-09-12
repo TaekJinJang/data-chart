@@ -1,31 +1,40 @@
 import {ApexOptions} from 'apexcharts';
 import {CHART_COLOR} from 'styles/colors';
-import {Points} from 'types/chart';
+import {dataPointType} from 'types/chart';
 
-interface ChartEventsType {
+interface BaseProps {
     idList: string[];
     queries: string[];
+}
+
+interface ChartEventsType extends BaseProps {
     addQuery: (value: string) => void;
     deleteQuery: (value: string) => void;
 }
-interface ColorsType {
-    idList: string[];
-    queries: string[];
-}
 
-interface dataPointType {
-    dataPointIndex: number;
+interface ColorsType extends BaseProps {}
+
+interface AnnotationsType extends BaseProps {
+    areaList: number[];
+    timeList: string[];
 }
 
 interface XaxisType {
     timeList: string[];
 }
 
-interface AnnotationsType {
-    idList: string[];
-    areaList: number[];
-    timeList: string[];
-    queries: string[];
+interface Points {
+    x: string;
+    y: number;
+    label?: {
+        text: string;
+        borderColor: string;
+    };
+    seriesIndex?: number;
+    marker: {
+        size: number;
+        strokeColor: string;
+    };
 }
 
 export const getNoDataOption = () => ({
