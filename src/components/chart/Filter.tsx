@@ -1,6 +1,7 @@
 import useChartData from 'hooks/useChartData';
 import useQuerystring from 'hooks/useQueryString';
 import styled from 'styled-components';
+import {BUTTON_COLOR} from 'styles/colors';
 
 const Filter = () => {
     const {idList} = useChartData();
@@ -44,12 +45,13 @@ const Container = styled.div`
 `;
 
 const FilterButton = styled.button<{$active?: string}>`
-    background-color: ${({$active}) => $active === 'true' && '#74d3a3'};
+    background-color: ${({$active}) =>
+        $active === 'true' ? BUTTON_COLOR.active : BUTTON_COLOR.default};
     border-radius: 50px;
     border-color: gray;
     margin-left: 20px;
     display: inline-block;
     &:hover {
-        background-color: #74d3a3;
+        background-color: ${BUTTON_COLOR.active};
     }
 `;
