@@ -41,7 +41,7 @@ const Filter = () => {
 export default Filter;
 
 const Container = styled.div`
-    margin-left: 50px;
+    margin: 30px 0 0 50px;
 `;
 
 const FilterButton = styled.button<{$active?: string}>`
