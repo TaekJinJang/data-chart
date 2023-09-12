@@ -1,7 +1,7 @@
 import {renderToString} from 'react-dom/server';
 import styled from 'styled-components';
 import {CHART_COLOR} from 'styles/colors';
-import LocationIcon from './icon/locationIcon';
+import LocationIcon from 'components/icon/LocationIcon';
 
 interface TooltipType {
     dataPointIndex: number;
