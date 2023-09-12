@@ -38,6 +38,7 @@ interface Points {
 }
 
 export const getNoDataOption = () => ({
+    // 데이터가 없을시 (받아오는 중) text
     text: 'Loading...',
     style: {
         fontSize: '40px',
@@ -68,6 +69,7 @@ export const getChartEventsOption = ({
     type: 'bar', // 차트 타입
     events: {
         click: (event, chart, config) => {
+            // 차트 데이터 클릭 시 필터링 기능
             const clickData = idList[config.dataPointIndex];
             queries.includes(clickData) ? deleteQuery(clickData) : addQuery(clickData);
         },
@@ -80,6 +82,7 @@ export const getChartEventsOption = ({
 });
 
 export const getColorsOption = ({idList, queries}: ColorsType): Partial<ApexOptions['colors']> => {
+    // 필터링 시 bar 데이터 하이라이트
     return [
         CHART_COLOR.area,
         ({dataPointIndex}: dataPointType) => {
@@ -90,6 +93,7 @@ export const getColorsOption = ({idList, queries}: ColorsType): Partial<ApexOpti
 };
 
 export const getFillOption = (): Partial<ApexOptions['fill']> => ({
+    // 데이터 opacity 값 조정
     opacity: [1, 0.5],
 });
 export const getStrokeOption = (): Partial<ApexOptions['stroke']> => ({
@@ -130,12 +134,13 @@ export const getXaxisOption = ({timeList}: XaxisType): Partial<ApexOptions['xaxi
     // X축
     categories: timeList, // 카테고리 목록
     tickAmount: 13, // 나타낼 라벨 개수
-    title: {text: '2023-02-05일자', offsetX: -600},
+    title: {text: '2023-02-01일자', offsetX: -500},
     labels: {
         rotate: 0,
     },
 });
 export const getAnnotationsOption = ({idList, areaList, timeList, queries}: AnnotationsType) => {
+    // 필터링 시 Area 데이터에 마커 생성
     const defaultMarker = {
         size: 6,
         strokeColor: CHART_COLOR.areaPoint,
