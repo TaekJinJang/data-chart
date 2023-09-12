@@ -2,10 +2,15 @@ import ApexCharts from 'react-apexcharts';
 import useChartData from 'hooks/useChartData';
 import styled from 'styled-components';
 import {ApexOptions} from 'apexcharts';
-import {CHART_COLOR, COMMON_COLOR} from 'styles/colors';
+import {CHART_COLOR} from 'styles/colors';
 import Filter from './Filter';
 import useQuerystring from 'hooks/useQueryString';
 import {Points} from 'types/chart';
+import {renderToString} from 'react-dom/server';
+
+interface dataPointType {
+    dataPointIndex: number;
+}
 
 const Chart = () => {
     const {timeList, idList, barList, areaList} = useChartData();
@@ -26,10 +31,10 @@ const Chart = () => {
     ];
 
     const filterColors = [
-        '#0059ff',
-        ({dataPointIndex}: {dataPointIndex: number}) => {
+        CHART_COLOR.area,
+        ({dataPointIndex}: dataPointType) => {
             const filterData = idList[dataPointIndex];
-            return queries.includes(filterData) ? '#ff0040' : '#00e396';
+            return queries.includes(filterData) ? CHART_COLOR.barFilter : CHART_COLOR.bar;
         },
     ];
 
@@ -41,7 +46,7 @@ const Chart = () => {
 
         const defaultLabel = {
             borderColor: CHART_COLOR.areaPoint,
-            text: '',
+            borderRadius: 10,
         };
         const setOptions = idList.reduce<Points[]>((acc, curId, index) => {
             const option = {
@@ -77,7 +82,7 @@ const Chart = () => {
                 toggleDataSeries: true, // 범례 항목 클릭 시 해당 데이터 시리즈를 토글(보이기/숨기기)
             },
             markers: {
-                fillColors: ['#0059ff', '#00e396'], // 범례 마커 색상 설정
+                fillColors: [CHART_COLOR.area, CHART_COLOR.bar], // 범례 마커 색상 설정
             },
         },
         chart: {
@@ -140,7 +145,7 @@ const Chart = () => {
             // X축
             categories: timeList, // 카테고리 목록
             tickAmount: 13, // 나타낼 라벨 개수
-            title: {text: '2023-02-05일자', offsetX: -600, style: {color: COMMON_COLOR.xaxisTitle}},
+            title: {text: '2023-02-05일자', offsetX: -600},
             labels: {
                 rotate: 0,
             },
@@ -149,8 +154,17 @@ const Chart = () => {
             points: handlePoints(),
         },
         tooltip: {
+            custom: ({dataPointIndex}: dataPointType) =>
+                createCustomTooltip({
+                    dataPointIndex,
+                    timeList,
+                    barList,
+                    areaList,
+                    idList,
+                    queries,
+                }),
             marker: {
-                fillColors: ['#0059ff', '#00e396'], // 툴팁 마커 색상 설정
+                fillColors: [CHART_COLOR.area, CHART_COLOR.bar], // 툴팁 마커 색상 설정
             },
         },
     };
@@ -171,3 +185,57 @@ const Container = styled.div`
     max-width: 1400px;
     margin: 50px;
 `;
+
+function createCustomTooltip({
+    dataPointIndex,
+    timeList,
+    barList,
+    areaList,
+    idList,
+    queries,
+}: {
+    dataPointIndex: number;
+    timeList: string[];
+    barList: number[];
+    areaList: number[];
+    idList: string[];
+    queries: string[];
+}) {
+    return renderToString(
+        <ul>
+            <li>{timeList[dataPointIndex]}</li>
+            <li>
+                <div
+                    style={{
+                        background: queries.includes(idList[dataPointIndex])
+                            ? '#45a054'
+                            : '#66C7F4',
+                        width: '10px',
+                        height: '10px',
+                        borderRadius: '10px',
+                    }}
+                ></div>
+                <div>Area:</div>
+                <div>{areaList[dataPointIndex]}</div>
+            </li>
+            <li>
+                <div
+                    style={{
+                        background: queries.includes(idList[dataPointIndex])
+                            ? '#e9184b'
+                            : '#99C2A2',
+                        width: '10px',
+                        height: '10px',
+                        borderRadius: '10px',
+                    }}
+                ></div>
+                <div>Bar:</div>
+                <div>{barList[dataPointIndex]}</div>
+            </li>
+            <li>
+                <div>지역:</div>
+                <div>{idList[dataPointIndex]}</div>
+            </li>
+        </ul>
+    );
+}
