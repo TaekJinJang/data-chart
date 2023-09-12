@@ -1,15 +1,25 @@
 import ApexCharts from 'react-apexcharts';
-import useChartData from 'hooks/useChartData';
 import Filter from './Filter';
 import useQuerystring from 'hooks/useQueryString';
 import * as options from 'components/chart/Options';
 import CustomTooltip from 'components/chart/CustomTooltip';
-import {dataPointType} from 'types/chart';
+import {dataPointType, dataResponseTypes} from 'types/chart';
 import styled from 'styled-components';
+import {useEffect, useState} from 'react';
+import {getChartData} from 'apis/chart';
+import processChartData from 'utils/processChartData';
 
 const Chart = () => {
-    const {timeList, idList, barList, areaList} = useChartData();
     const {queries, addQuery, deleteQuery} = useQuerystring();
+    const [data, setData] = useState<dataResponseTypes>({});
+    const {timeList, idList, barList, areaList} = processChartData(data);
+    useEffect(() => {
+        const getData = async () => {
+            const data = await getChartData();
+            setData(data.response);
+        };
+        getData();
+    }, []);
 
     const series = [
         // 차트 데이터 시리즈
@@ -58,7 +68,7 @@ const Chart = () => {
 
     return (
         <Container>
-            <Filter />
+            <Filter idList={idList} />
             <ApexCharts series={series} options={chartOptions} height={600} />
         </Container>
     );

@@ -1,10 +1,8 @@
-import useChartData from 'hooks/useChartData';
 import useQuerystring from 'hooks/useQueryString';
 import styled from 'styled-components';
 import {BUTTON_COLOR} from 'styles/colors';
 
-const Filter = () => {
-    const {idList} = useChartData();
+const Filter = ({idList}: {idList: string[]}) => {
     const {queries, addQuery, deleteQuery} = useQuerystring();
 
     const filterList = [...new Set(idList)];
