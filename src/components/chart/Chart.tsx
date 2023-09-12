@@ -4,11 +4,15 @@ import styled from 'styled-components';
 import {ApexOptions} from 'apexcharts';
 import {CHART_COLOR, COMMON_COLOR} from 'styles/colors';
 import Filter from './Filter';
+import useQuerystring from 'hooks/useQueryString';
+import {Points} from 'types/chart';
 
 const Chart = () => {
     const {timeList, idList, barList, areaList} = useChartData();
+    const {queries, addQuery, deleteQuery} = useQuerystring();
 
     const series = [
+        // 차트 데이터 시리즈
         {
             name: 'Area',
             type: 'area',
@@ -20,6 +24,41 @@ const Chart = () => {
             data: barList,
         },
     ];
+
+    const filterColors = [
+        '#0059ff',
+        ({dataPointIndex}: {dataPointIndex: number}) => {
+            const clickData = idList[dataPointIndex];
+            return queries.includes(clickData) ? '#ff0040' : '#00e396';
+        },
+    ];
+
+    const handlePoints = () => {
+        const defaultMarker = {
+            size: 6,
+            strokeColor: CHART_COLOR.areaPoint,
+        };
+
+        const defaultLabel = {
+            borderColor: CHART_COLOR.areaPoint,
+            text: '',
+        };
+        const setOptions = idList.reduce<Points[]>((acc, curId, index) => {
+            const option = {
+                seriesIndex: 0,
+                marker: {...defaultMarker},
+                label: {...defaultLabel, text: curId},
+                x: timeList[index],
+                y: areaList[index],
+            };
+
+            if (queries.includes(curId)) acc.push(option);
+
+            return acc;
+        }, []);
+
+        return setOptions;
+    };
 
     const chartOptions: ApexOptions = {
         noData: {
@@ -38,7 +77,7 @@ const Chart = () => {
                 toggleDataSeries: true, // 범례 항목 클릭 시 해당 데이터 시리즈를 토글(보이기/숨기기)
             },
             markers: {
-                fillColors: ['#66C7F4', '#99C2A2'], // 범례 마커 색상 설정
+                fillColors: ['#0059ff', '#00e396'], // 범례 마커 색상 설정
             },
         },
         chart: {
@@ -51,7 +90,7 @@ const Chart = () => {
                 },
             },
         },
-        // colors: ['#DB211D', '#6690FF'],
+        colors: filterColors,
         fill: {
             opacity: [1, 0.5],
         },
@@ -98,6 +137,14 @@ const Chart = () => {
             title: {text: '2023-02-05일자', offsetX: -600, style: {color: COMMON_COLOR.xaxisTitle}},
             labels: {
                 rotate: 0,
+            },
+        },
+        annotations: {
+            points: handlePoints(),
+        },
+        tooltip: {
+            marker: {
+                fillColors: ['#0059ff', '#00e396'], // 툴팁 마커 색상 설정
             },
         },
     };
