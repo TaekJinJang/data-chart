@@ -1,37 +1,48 @@
 {
-  "name": "wnated-pre-onboarding-4week",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "start": "vite",
-    "build": "tsc && vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "apexcharts": "^3.42.0",
-    "axios": "^1.5.0",
-    "react": "^18.2.0",
-    "react-apexcharts": "^1.4.1",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.15.0",
-    "styled-components": "^6.0.7"
-  },
-  "devDependencies": {
-    "@types/react": "^18.2.15",
-    "@types/react-dom": "^18.2.7",
-    "@types/styled-components": "^5.1.26",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "@typescript-eslint/parser": "^6.0.0",
-    "@vitejs/plugin-react": "^4.0.3",
-    "eslint": "^8.45.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.3",
-    "prettier": "^3.0.3",
-    "typescript": "^5.0.2",
-    "vite": "^4.4.5",
-    "vite-tsconfig-paths": "^4.2.1"
-  }
+    "name": "wnated-pre-onboarding-4week",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "start": "vite",
+        "build": "tsc && vite build",
+        "postinstall": "husky install",
+        "format": "prettier --cache --write .",
+        "lint": "eslint --cache .",
+        "preview": "vite preview"
+    },
+    "lint-staged": {
+        "*.{js,jsx,ts,tsx}": "npm run format"
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app"
+        ]
+    },
+    "dependencies": {
+        "apexcharts": "^3.42.0",
+        "axios": "^1.5.0",
+        "react": "^18.2.0",
+        "react-apexcharts": "^1.4.1",
+        "react-dom": "^18.2.0",
+        "react-router-dom": "^6.15.0",
+        "styled-components": "^6.0.7"
+    },
+    "devDependencies": {
+        "@types/react": "^18.2.15",
+        "@types/react-dom": "^18.2.7",
+        "@types/styled-components": "^5.1.26",
+        "@typescript-eslint/eslint-plugin": "^6.0.0",
+        "@typescript-eslint/parser": "^6.0.0",
+        "@vitejs/plugin-react": "^4.0.3",
+        "eslint": "^8.45.0",
+        "eslint-config-prettier": "^9.0.0",
+        "eslint-plugin-react-hooks": "^4.6.0",
+        "eslint-plugin-react-refresh": "^0.4.3",
+        "husky": "^8.0.3",
+        "prettier": "^3.0.3",
+        "typescript": "^5.0.2",
+        "vite": "^4.4.5",
+        "vite-tsconfig-paths": "^4.2.1"
+    }
 }
