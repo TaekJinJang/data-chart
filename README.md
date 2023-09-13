@@ -2,6 +2,9 @@
  - 주어진 데이터를 기반으로 복합형 그래프 형태의 시계열 차트를 구현합니다.
  - 핵심 기능 : `시계열 차트`, `Hover 툴팁`, `지역별 필터링`
 
+## ⏲️ 개발 기간
+ - 2023.09.10 ~ 2023.09.13
+
 ## 🙂 시작 가이드
 * 배포 주소
 
@@ -13,6 +16,8 @@
    $ npm start
   ```
 
+## 💡 과제 목적
+- ㅁㄴㅇ
 
 ## 🎥 화면 구성
 
@@ -36,6 +41,28 @@
  ┣ 📂types
  ┣ 📂utils
  ```
+## 🚩 코드 컨벤션
+<details>
+    <summary><b>👈 컨벤션 보기 </b></summary>
+ 
+| 커밋 유형 | 의미 |
+| --- | --- |
+| init | 프로젝트 시작 |
+| feat | 기능 추가 |
+| style | 코드 포맷팅 |
+| refactor | 코드 리팩토링 |
+| chore | 패키지 매니저 및 그 외 기타 수정 ex) .gitignore |
+| rename | 파일 또는 폴더 명을 수정하거나 옮기는 작업만인 경우 |
+| remove | 파일을 삭제하는 작업만 수행한 경우 |
+| setting | 기본 세팅 변경의 경우 |
+| docs | README.md 수정 등 |
+| design | UI 디자인 |
+| fix | 오타 및 오류로 인한 버그 수정 |
+| merge | 머지, 충돌해결 등  |
+
+</details>
+<br/>
+
 ## ✔️ 주요 기능
 
 ### `시계열 차트`
@@ -44,83 +71,60 @@
   - 영역 그래프와 막대 그래프 간의 **상호작용을 명확**하게 보여줍니다.
 
 ### `호버 기능`
-- 사용자가 검색창에 아무 입력도 하지 않았을 때, 최근 검색했던 질환명을 최근 검색어로 제공합니다.
-- 만약 사용자가 아직 어떠한 검색도 수행하지 않았다면, '최근 검색어 없음' 이라는 안내 문구를 출력합니다.
-> 사용자가 검색 버튼을 누르면 sessionStorage에 저장이 되며 검색 상자에 최근 검색어 목록이 나오게 됩니다. 최근 검색어 목록은 같은 검색어가 있다면 최근 검색의 순서에 맞게끔 삭제 후 첫번째 배열로 추가됩니다. 최대 7개까지 보일 수 있으며 그 이상 저장될 경우 배열의 마지막. 즉, 가장 오래된 검색어부터 삭제합니다.
+- 차트에 마우스 호버 시 해당 구역의 **지역(id)**, **area**, **bar**, **time** 데이터를 툴팁 형태로 제공합니다.
+
+ |호버 시 (필터링 X)|호버 시 (필터링 O)|
+ |:---:|:---:|
+ |![](https://velog.velcdn.com/images/taek_jini/post/cf9fc2ce-aac8-4217-b3dd-40bb41aa8662/image.png)|![](https://velog.velcdn.com/images/taek_jini/post/fc5cc95c-048e-4ff4-a75f-ff375c4f8b8a/image.png)
+
 
 ### `필터링 기능`
-- 사용자의 입력값이 없거나 한글 음절이 완성되지 않은 경우(즉, 자음 또는 모음만 입력된 경우), 데이터 요청을 하지 않아 불필요한 **네트워크 트래픽을 최소화**합니다.
-- 한글의 경우 완전한 음절이 완성되지 않으면(자음/모음만 입력 시) 해당 부분을 **필터링**하여 요청합니다.
-   >   - **ex) 감ㅁ기 → 감기 , 감기ㅁ → 감기**
-- 디바운스 기법을 활용하여 500ms 동안 타이핑 멈춤 감지 시에만 데이터를 실제로 요구함으로써 **서버와 클라이언트 간의 부담**을 줄입니다.
-- 모든 API 응답은 **로컬에서 캐싱**되며, 이후 동일한 요청이 발생하면 API를 호출하는 대신 캐시에서 데이터를 가져옵니다.
-- 캐싱된 데이터는 **12시간 후 만료**됩니다.
+- 필터링 기능은 버튼 형태로 **id(지역)** 를 제공합니다.
+- 버튼 **클릭** 시 선택한 id값과 동일한 데이터 구역을 하이라이트 처리합니다.
+- 특정 데이터 구역을 **`클릭`**  시에도 id값에 따라서 필터링 기능을 제공합니다.
+- 1개 이상의 다중 필터링 기능을 제공합니다.
+- 필터링 시 area 데이터가 잘 보일 수 있도록 **마커** 생성
+
+ |필터링 데모 영상|필터링 시 area 마커|
+ |:---:|:---:|
+ |![filtering](https://github.com/TaekJinJang/data-chart/assets/93184838/bd477c09-b317-45ee-8099-bdbfefda1c30)|![](https://velog.velcdn.com/images/taek_jini/post/504d0f1e-7b0a-4af3-b81f-3e1bf9c27ff8/image.png)
 
 
 ## ⭐️ 구현 방법 ⭐️
-
-### 1. 로컬 캐싱 구현 방법
-- **로컬 캐싱 구현 목표** - 로컬캐싱을 활용하여 API 호출 횟수를 줄이는 것을 목표로하여 구현하였습니다.
-  - 브라우저의 Cache Storage에 API 요청을 캐싱합니다.
-  - Cache Storage에 데이터 저장 시 header에 캐시 시간과 body에 데이터를 저장합니다.
-  - 이후 동일한 쿼리로 요청이 발생하면 match() 메소드로 비교후 쿼리가 같은 경우 새로 API 요청을 하지 않고, 캐시 데이터를 반환합니다.
-  - 캐시 된 데이터를 찾았으나 expireTime이 현재 시간 기준 만료 되었다면 리패칭 하여 받아온 데이터로 교체합니다.
-
-### 2. 입력별 API 호출 횟수를 줄이는 전략
-- 입력값이 아무것도 없으면 요청하지 않습니다.
-- 디바운싱을 활용해 500ms이상 타이핑이 멈추면 데이터를 요청하도록 유도하여 불필요한 요청을 줄였습니다.
-- 한글의 경우 완전한 음절이 완성되지 않으면(자음/모음만 입력 시) 해당 부분을 필터링하여 요청합니다.
-
-  https://github.com/TaekJinJang/recommend-search/blob/34801cbaeb4b292d63770bcba451c1c452d8aa00/src/utils/regex.ts#L1-L5
-
   
-- API 요청 결과는 캐싱하고, 이후 동일한 요청이 들어오면 API 요청 대신 캐싱된 값을 활용합니다.(캐싱데이터 expire time: 12시간)
-  
-  https://github.com/TaekJinJang/recommend-search/blob/34801cbaeb4b292d63770bcba451c1c452d8aa00/src/hooks/useRecsSearch.ts#L15-L24
+### 1. 데이터 전처리
+- api 통신으로 응답받은 데이터를 차트에 넣을 수 있도록 전처리하는 코드를 유틸 함수로 분리하였습니다.
+https://github.com/TaekJinJang/data-chart/blob/68e08232a66be93c2869544bf65cd8647e806b66/src/utils/processChartData.ts#L3-L10
 
-  
+### 2. 데이터 에러 시 처리
+- 만약 차트 컴포넌트가 데이터를 받아 오지 못했다면 필터링 한 모든 마커들을 지워 사용자의 혼동을 최소화합니다.
 
-### 3. 키보드를 이용한 추천 검색어 기능 사용법
-- 검색어를 입력했을 때 추천 검색어가 없으면, '추천 검색어가 없습니다'라는 문구가 출력됩니다.
-- 추천 검색어가 있는 경우 키보드 위/아래 방향키로 이동 가능하고, 엔터 키를 눌러 검색할 수 있습니다.
-
-  https://github.com/TaekJinJang/recommend-search/blob/34801cbaeb4b292d63770bcba451c1c452d8aa00/src/pages/Home.tsx#L45-L69
+|데이터가 없거나 로딩중일 시|
+|:---:|
+|<img src="https://github.com/TaekJinJang/data-chart/assets/93184838/6c7423a3-fdec-420e-a518-c77b37108ae0" style="width:500px; height:300px;"/> |
 
 
-### 4. 포커싱 이후 입력값이 없다면 최근 검색어 호출
-- 사용자가 검색창에 포커스를 맞추고 아무런 입력값도 없다면, 이전에 검색했던 단어들이 최근 검색어로 보여집니다. 이 정보들은 사용자가 이전에 검색한 내용을 기반으로 sessionStorage에 저장되어 있습니다.
-- 사용자가 특정 단어로 검색을 실행하면 해당 단어는 즉시 sessionStorage에 저장됩니다. 그 후, 다시 한번 검색창에 포커스를 맞추면, 저장된 최근 검색어 목록이 보여집니다.
-- 만약 동일한 단어를 여러 번 검색했다면, 해당 단어는 목록에서 중복되지 않으며 가장 최신의 조회 순서로 목록의 맨 앞으로 배치됩니다.
-- 최근 검색어 목록은 한 번에 최대 7개까지만 보여줍니다. 새로운 단어가 추가되면서 목록의 수가 7개를 초과하게 되면, 가장 오래된(즉, 목록의 마지막 위치한)검색단어부터 삭제됩니다.
+### 3. 커스텀 툴팁
+- 툴팁에 id,area,bar의 값이 다 들어갈 수 있도록 커스텀 툴팁을 제작하였습니다.
+- 기존 툴팁보다 사용자가 보기 편한 UI로 변경하였습니다.
+- apexCharts 에선 현재 커스텀 툴팁에 HTML 문법만 허용하지만 가독성을 위해 jsx로 제작 후 renderToString으로 변경하였습니다.
 
-  https://github.com/TaekJinJang/recommend-search/blob/34801cbaeb4b292d63770bcba451c1c452d8aa00/src/hooks/useRecentSearch.ts#L7-L35
+https://github.com/TaekJinJang/data-chart/blob/68e08232a66be93c2869544bf65cd8647e806b66/src/components/chart/CustomTooltip.tsx#L15-L45
 
-## 💡 Best Practice 도출
-팀원들과 함께 고민한 내용들은 아래 링크에서 확인하실 수 있습니다.
-- [Notion 링크](https://motley-bird-51b.notion.site/Best-Practice-44d333bf327f4ed182c6d7c9b6ed1361?pvs=4) 참고
+### 4. 다중 필터링
+- `useSearchParams` 을 통해 1개 이상의 다중 필터링 기능을 제공합니다.
+- 필터링 시 area 데이터가 잘 보일 수 있도록 마커를 생성합니다.
+- 차트 내 특정 데이터 구역 클릭 시에도 필터링 기능을 제공합니다.
+
+https://github.com/TaekJinJang/data-chart/blob/68e08232a66be93c2869544bf65cd8647e806b66/src/hooks/useQueryString.ts#L3-L25
+
 
 ## 🔫 트러블 슈팅
 ### Input에서 '[', '*' 입력 시 ERROR 발생
 - **문제**
-  - Input의 value 값 중 한글의 모음,자음이 포함된 경우 정규표현식의 replace 메소드를 통해 필터링
-  - `'['`, `'*'`  등 value 값에 포함된 경우 메타 문자로 인식하여 오류
+
 - **해결방안**
-  - 메타 문자를 일반 문자로 처리하도록 이스케이프 처리를 적용
-  - `const regex = string.replace(/[ㄱ-ㅎㅏ-ㅣ[*]/g, '');`
-### Input에서 추천 검색어 클릭 시 검색 상자 사라짐
-- **문제**
-  - Input 요소의 onFocus와 onBlur 이벤트 핸들러를 사용하여 추천 검색어를 보여주는 검색 상자의 표시 여부를 제어
-  - 추천 검색어를 클릭하는 순간, onBlur 이벤트가 발생하면서 검색 상자가 사라지는 문제가 발생
-- **해결방안**
-  - **1번 방법으로 해결!**
-  1. `useRef`, `useEffect`, 그리고 `addEventListener`를 활용하여 문제를 해결
-  2. Input과 검색 상자에 대해 감싸는 section 태그를 추가하고, CSS 선택자와 속성을 이용하여 검색 상자의 display 속성값을 변경.
-  ``` js
-  &:has(input:focus) {
-        & > div {
-            display: block;
-        }
-    }```
+
 
 ## 💡 기술스택 
 
