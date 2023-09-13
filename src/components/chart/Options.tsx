@@ -68,7 +68,7 @@ export const getChartEventsOption = ({
     height: 350, // 높이 설정
     type: 'bar', // 차트 타입
     events: {
-        click: (event, chart, config) => {
+        click: (_event, _chart, config) => {
             // 차트 데이터 클릭 시 필터링 기능
             const clickData = idList[config.dataPointIndex];
             queries.includes(clickData) ? deleteQuery(clickData) : addQuery(clickData);
