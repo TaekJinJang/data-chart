@@ -6,7 +6,6 @@ module.exports = {
         es2020: true,
     },
     extends: [
-        'react-app',
         'prettier',
         'eslint:recommended',
         'plugin:@typescript-eslint/recommended',
@@ -24,10 +23,6 @@ module.exports = {
         'no-unused-vars': 1, // 사용하지 않는 변수 경고 (에러 대신)
         'func-style': ['error', 'expression'], // 함수 스타일 지정
 
-        'react-refresh/only-export-components': [
-            'warn',
-            {allowConstantExport: true},
-            {usePrettierrc: '.prettierrc.cjs'},
-        ],
+        'react-refresh/only-export-components': ['warn', {allowConstantExport: true}],
     },
 };

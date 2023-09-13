@@ -14,11 +14,6 @@
     "lint-staged": {
         "*.{js,jsx,ts,tsx}": "npm run format"
     },
-    "eslintConfig": {
-        "extends": [
-            "react-app"
-        ]
-    },
     "dependencies": {
         "apexcharts": "^3.42.0",
         "axios": "^1.5.0",
