@@ -1,1 +1,1 @@
-export const BASE_URL = '/data.mock.json';
+export const BASE_URL = '/';
